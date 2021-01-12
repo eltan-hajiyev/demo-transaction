@@ -66,9 +66,9 @@ class DemoTransactionalTests {
 	@Test
 	/*-
 	 * Using: without any annotation
-	 * 1. new session for every query 
+	 * 1. multiple session. will open new session for every query 
 	 * 2. calling select before update for the checking changes
-	 * 3. It will not work without 'enable_lazy_load_no_trans=true'
+	 * 3. It will work with 'enable_lazy_load_no_trans=true' or with EAGER loading
 	 */
 	void testDefaultSelectAndUpdate() throws Exception {
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
@@ -93,8 +93,7 @@ class DemoTransactionalTests {
 	 * 
 	 * 1: opens single session.
 	 * 2: will not call select before update
-	 * 3. starts transaction
-	 * 4. with max-poll-size=1 it will work like @Transactional with @Lock.
+	 * 3. with max-poll-size=1 it will work like @Transactional with @Lock.
 	 */
 	void testTransactionalSelectAndUpdate() throws Exception {
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
