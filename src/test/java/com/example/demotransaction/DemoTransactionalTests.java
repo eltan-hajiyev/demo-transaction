@@ -37,7 +37,7 @@ import com.example.demotransaction.service.StudentService;
  */
 @SpringBootTest
 @TestPropertySource(properties = { "spring.jpa.properties.hibernate.enable_lazy_load_no_trans=true" })
-class DemoTransactionTests {
+class DemoTransactionalTests {
 	@Autowired
 	private StudentRepository studentRepository;
 
@@ -49,7 +49,7 @@ class DemoTransactionTests {
 	private ThreadPoolTaskExecutor taskExecutor;
 
 	@Autowired
-	public DemoTransactionTests(StudentService studentService) {
+	public DemoTransactionalTests(StudentService studentService) {
 		this.studentService = studentService;
 	}
 

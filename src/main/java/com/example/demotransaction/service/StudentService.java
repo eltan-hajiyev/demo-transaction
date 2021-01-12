@@ -58,7 +58,7 @@ public class StudentService {
 	public Student getStudent(Student student) {
 		System.err.println("1:::::::" + student);
 
-		if (student.getStatus()) {
+		if (student.getCount() > 0) {
 			return student;
 		}
 		try {
