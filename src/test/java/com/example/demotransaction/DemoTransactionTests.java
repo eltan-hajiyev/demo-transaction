@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.test.context.TestPropertySource;
 
 import com.example.demotransaction.model.Student;
 import com.example.demotransaction.repository.StudentRepository;
@@ -35,6 +36,7 @@ import com.example.demotransaction.service.StudentService;
  * 
  */
 @SpringBootTest
+@TestPropertySource(properties = { "spring.jpa.properties.hibernate.enable_lazy_load_no_trans=true" })
 class DemoTransactionTests {
 	@Autowired
 	private StudentRepository studentRepository;
@@ -66,13 +68,15 @@ class DemoTransactionTests {
 	 * Using: without any annotation
 	 * 1. new session for every query 
 	 * 2. calling select before update for the checking changes
+	 * 3. It will not work without 'enable_lazy_load_no_trans=true'
 	 */
-	void testDefaultSelectAndUpdate() {
+	void testDefaultSelectAndUpdate() throws Exception {
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			CompletableFuture<Student> future = taskExecutor.submitListenable(() -> {
 				return studentService.getStudentDefault(studentInitial.getId());
 			}).completable();
+			Thread.sleep(200);
 			futureList.add(future);
 		}
 
@@ -92,12 +96,13 @@ class DemoTransactionTests {
 	 * 3. starts transaction
 	 * 4. with max-poll-size=1 it will work like @Transactional with @Lock.
 	 */
-	void testTransactionalSelectAndUpdate() {
+	void testTransactionalSelectAndUpdate() throws Exception {
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			CompletableFuture<Student> future = taskExecutor.submitListenable(() -> {
 				return studentService.getStudentTransactional(studentInitial.getId());
 			}).completable();
+			Thread.sleep(200);
 			futureList.add(future);
 		}
 
@@ -115,12 +120,13 @@ class DemoTransactionTests {
 	 * 1: Like in default @Transactional but ignores update and insert. Will not throw exception if use save.
 	 * 
 	 */
-	void testTransactionalReadOnlySelectAndUpdate() {
+	void testTransactionalReadOnlySelectAndUpdate() throws Exception {
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			CompletableFuture<Student> future = taskExecutor.submitListenable(() -> {
 				return studentService.getStudentTransactionalReadOnly(studentInitial.getId());
 			}).completable();
+			Thread.sleep(200);
 			futureList.add(future);
 		}
 
@@ -138,12 +144,13 @@ class DemoTransactionTests {
 	 * 1. Row will be locked till end of transaction 
 	 * 2. Will not call select before update
 	 */
-	void testTransactionalLockSelectAndUpdate() {
+	void testTransactionalLockSelectAndUpdate() throws Exception {
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			CompletableFuture<Student> future = taskExecutor.submitListenable(() -> {
 				return studentService.getStudentTransactionalLocked(studentInitial.getId());
 			}).completable();
+			Thread.sleep(200);
 			futureList.add(future);
 		}
 
@@ -162,12 +169,13 @@ class DemoTransactionTests {
 	 * 2. Will not call select before update
 	 * 3. Will close connection after 2 second and will throw exception for next 
 	 */
-	void testTransactionalLockTimeoutSelectAndUpdate() {
+	void testTransactionalLockTimeoutSelectAndUpdate() throws Exception {
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			CompletableFuture<Student> future = taskExecutor.submitListenable(() -> {
 				return studentService.getStudentTransactionalTimeoutLocked(studentInitial.getId());
 			}).completable();
+			Thread.sleep(200);
 			futureList.add(future);
 		}
 

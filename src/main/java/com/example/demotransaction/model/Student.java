@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.transaction.Transactional;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -52,6 +53,7 @@ public class Student {
 		this.name = name;
 	}
 
+	@Transactional
 	public List<Book> getBooks() {
 		return books;
 	}
