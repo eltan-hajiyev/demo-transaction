@@ -1,11 +1,9 @@
 package com.example.demotransaction.service;
 
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,16 +69,6 @@ public class StudentService {
 
 		studentRepository.save(student);
 		System.err.println("2:::::::" + student);
-
-		return student;
-	}
-
-	@Cacheable
-	public Student getCachedStudent(Integer id) {
-		Student student = new Student();
-		student.setId(55);
-		student.setName("Hello" + new Random().nextInt());
-		student.setStatus(false);
 
 		return student;
 	}

@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import javax.annotation.PostConstruct;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,24 +41,12 @@ class DemoTransactionalTests {
 
 	private StudentService studentService;
 
-	private static Student studentInitial;
-
 	@Autowired
 	private ThreadPoolTaskExecutor taskExecutor;
 
 	@Autowired
 	public DemoTransactionalTests(StudentService studentService) {
 		this.studentService = studentService;
-	}
-
-	@PostConstruct
-	public void initSingleModel() {
-		studentInitial = new Student();
-		studentInitial.setName("Rustam");
-		studentInitial.setStatus(false);
-
-		System.out.println("initial creating student: ");
-		studentRepository.save(studentInitial);
 	}
 
 	@Test
@@ -71,10 +57,11 @@ class DemoTransactionalTests {
 	 * 3. It will work with 'enable_lazy_load_no_trans=true' or with EAGER loading
 	 */
 	void testDefaultSelectAndUpdate() throws Exception {
+		Integer studentId = 1;
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			CompletableFuture<Student> future = taskExecutor.submitListenable(() -> {
-				return studentService.getStudentDefault(studentInitial.getId());
+				return studentService.getStudentDefault(studentId);
 			}).completable();
 			Thread.sleep(200);
 			futureList.add(future);
@@ -82,7 +69,7 @@ class DemoTransactionalTests {
 
 		futureList.stream().forEach(f -> f.join());
 
-		Student student = studentRepository.findById(studentInitial.getId()).get();
+		Student student = studentRepository.findById(studentId).get();
 		System.err.println("count:" + student.getCount());
 		assertThat(student.getCount()).isNotEqualTo(1);
 	}
@@ -96,10 +83,11 @@ class DemoTransactionalTests {
 	 * 3. with max-poll-size=1 it will work like @Transactional with @Lock.
 	 */
 	void testTransactionalSelectAndUpdate() throws Exception {
+		Integer studentId = 2;
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			CompletableFuture<Student> future = taskExecutor.submitListenable(() -> {
-				return studentService.getStudentTransactional(studentInitial.getId());
+				return studentService.getStudentTransactional(studentId);
 			}).completable();
 			Thread.sleep(200);
 			futureList.add(future);
@@ -107,7 +95,7 @@ class DemoTransactionalTests {
 
 		futureList.stream().forEach(f -> f.join());
 
-		Student student = studentRepository.findById(studentInitial.getId()).get();
+		Student student = studentRepository.findById(studentId).get();
 		System.err.println("count:" + student.getCount());
 		assertThat(student.getCount()).isNotEqualTo(1);
 	}
@@ -120,10 +108,11 @@ class DemoTransactionalTests {
 	 * 
 	 */
 	void testTransactionalReadOnlySelectAndUpdate() throws Exception {
+		Integer studentId = 3;
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			CompletableFuture<Student> future = taskExecutor.submitListenable(() -> {
-				return studentService.getStudentTransactionalReadOnly(studentInitial.getId());
+				return studentService.getStudentTransactionalReadOnly(studentId);
 			}).completable();
 			Thread.sleep(200);
 			futureList.add(future);
@@ -131,7 +120,7 @@ class DemoTransactionalTests {
 
 		futureList.stream().forEach(f -> f.join());
 
-		Student student = studentRepository.findById(studentInitial.getId()).get();
+		Student student = studentRepository.findById(studentId).get();
 		System.err.println("count:" + student.getCount());
 		assertThat(student.getCount()).isEqualTo(0);
 	}
@@ -144,10 +133,11 @@ class DemoTransactionalTests {
 	 * 2. Will not call select before update
 	 */
 	void testTransactionalLockSelectAndUpdate() throws Exception {
+		Integer studentId = 4;
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			CompletableFuture<Student> future = taskExecutor.submitListenable(() -> {
-				return studentService.getStudentTransactionalLocked(studentInitial.getId());
+				return studentService.getStudentTransactionalLocked(studentId);
 			}).completable();
 			Thread.sleep(200);
 			futureList.add(future);
@@ -155,7 +145,7 @@ class DemoTransactionalTests {
 
 		futureList.stream().forEach(f -> f.join());
 
-		Student student = studentRepository.findById(studentInitial.getId()).get();
+		Student student = studentRepository.findById(studentId).get();
 		System.err.println("count:" + student.getCount());
 		assertThat(student.getCount()).isEqualTo(1);
 	}
@@ -169,10 +159,11 @@ class DemoTransactionalTests {
 	 * 3. Will close connection after 2 second and will throw exception for next 
 	 */
 	void testTransactionalLockTimeoutSelectAndUpdate() throws Exception {
+		Integer studentId = 5;
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			CompletableFuture<Student> future = taskExecutor.submitListenable(() -> {
-				return studentService.getStudentTransactionalTimeoutLocked(studentInitial.getId());
+				return studentService.getStudentTransactionalTimeoutLocked(studentId);
 			}).completable();
 			Thread.sleep(200);
 			futureList.add(future);
@@ -188,7 +179,8 @@ class DemoTransactionalTests {
 	 * 1. Lock will not work without @Transactional
 	 */
 	void testNoTransactionalLockSelectAndUpdate() {
-		assertThrows(Exception.class, () -> studentService.getStudentNoTransactionalLocked(studentInitial.getId()));
+		Integer studentId = 1;
+		assertThrows(Exception.class, () -> studentService.getStudentNoTransactionalLocked(studentId));
 	}
 
 }

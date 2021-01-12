@@ -52,14 +52,9 @@ class DemoTransactionalWithLongLifeMethodsTests {
 	@PostConstruct
 	public void initSingleModel() {
 		System.out.println("initial create of student list: ");
-		for (int i = 0; i < 5; i++) {
-			Student student = new Student();
-			student.setName("Rustam: " + i);
-			student.setStatus(false);
-			studentRepository.save(student);
-
-			studentIdList.add(student.getId());
-		}
+		studentRepository.findAll().iterator().forEachRemaining(st -> {
+			studentIdList.add(st.getId());
+		});
 	}
 
 	@Test

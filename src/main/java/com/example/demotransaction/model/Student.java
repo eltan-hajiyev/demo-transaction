@@ -11,12 +11,10 @@ import javax.transaction.Transactional;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.SelectBeforeUpdate;
 
 @Entity
 @DynamicUpdate
 @DynamicInsert
-@SelectBeforeUpdate(false)
 public class Student {
 	@Id
 	@GeneratedValue

@@ -8,10 +8,11 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Book {
-	
+
 	private Integer id;
 
-	
+	private String name;
+
 	private Student student;
 
 	@Id
@@ -32,6 +33,14 @@ public class Book {
 
 	public void setStudent(Student student) {
 		this.student = student;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }
