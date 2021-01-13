@@ -50,7 +50,7 @@ class DemoTransactionalWithLongLifeMethodsTests {
 	List<Integer> studentIdList = new ArrayList<>();
 
 	@PostConstruct
-	public void initSingleModel() {
+	public void init_list() {
 		System.out.println("initial create of student list: ");
 		studentRepository.findAll().iterator().forEachRemaining(st -> {
 			studentIdList.add(st.getId());
@@ -60,7 +60,7 @@ class DemoTransactionalWithLongLifeMethodsTests {
 	@Test
 	/*-
 	 */
-	void testDefaultSelect() throws Exception {
+	void default_transactional_long_life_methods() throws Exception {
 		List<CompletableFuture<List<Student>>> futureList = new ArrayList<>();
 
 		Arrays.asList(1, 2, 3, 4).forEach((i) -> {
@@ -71,6 +71,7 @@ class DemoTransactionalWithLongLifeMethodsTests {
 			futureList.add(future);
 		});
 
+		Thread.sleep(200);
 		System.err.println("It will done immediatly. Will not wait end of future methods.");
 		studentFilterService.easyTransactionalMethod();
 
@@ -81,7 +82,7 @@ class DemoTransactionalWithLongLifeMethodsTests {
 	/*-
 	 * 1. Don't do like this. Split you long life methods to short life @Transactional services.
 	 */
-	void testTransactionalSelect() throws Exception {
+	void transactional_long_life_methods() throws Exception {
 		List<CompletableFuture<List<Student>>> futureList = new ArrayList<>();
 
 		Arrays.asList(1, 2, 3, 4).forEach((i) -> {
@@ -92,6 +93,7 @@ class DemoTransactionalWithLongLifeMethodsTests {
 			futureList.add(future);
 		});
 
+		Thread.sleep(200);
 		System.err.println("EasyMethod list can be started! Bu it will not because transactional blocked sessions.");
 		System.err.println("It will wait end of future methods to unblock session.");
 		studentFilterService.easyTransactionalMethod();

@@ -1,10 +1,6 @@
 package com.example.demotransaction.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class Book {
@@ -26,7 +22,7 @@ public class Book {
 	}
 
 	@JoinColumn(name = "student_id")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	public Student getStudent() {
 		return student;
 	}
@@ -35,6 +31,7 @@ public class Book {
 		this.student = student;
 	}
 
+	@Column
 	public String getName() {
 		return name;
 	}
@@ -43,4 +40,12 @@ public class Book {
 		this.name = name;
 	}
 
+	@Override
+	public String toString() {
+		return "Book{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", studentId=" + student.getId() +
+				'}';
+	}
 }

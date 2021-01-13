@@ -52,7 +52,6 @@ public class Student {
 		this.name = name;
 	}
 
-	@Transactional
 	public List<Book> getBooks() {
 		return books;
 	}

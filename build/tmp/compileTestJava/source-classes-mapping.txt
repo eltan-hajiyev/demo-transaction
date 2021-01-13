@@ -1,0 +1,6 @@
+com/example/demotransaction/DemoJpaAccessStrategyTests.java
+ com.example.demotransaction.DemoJpaAccessStrategyTests
+com/example/demotransaction/DemoTransactionalTests.java
+ com.example.demotransaction.DemoTransactionalTests
+com/example/demotransaction/DemoTransactionalWithLongLifeMethodsTests.java
+ com.example.demotransaction.DemoTransactionalWithLongLifeMethodsTests

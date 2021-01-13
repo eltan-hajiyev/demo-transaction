@@ -56,7 +56,7 @@ class DemoTransactionalTests {
 	 * 2. calling select before update for the checking changes
 	 * 3. It will work with 'enable_lazy_load_no_trans=true' or with EAGER loading
 	 */
-	void testDefaultSelectAndUpdate() throws Exception {
+	void default_select_update() throws Exception {
 		Integer studentId = 1;
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
@@ -82,7 +82,7 @@ class DemoTransactionalTests {
 	 * 2: will not call select before update
 	 * 3. with max-poll-size=1 it will work like @Transactional with @Lock.
 	 */
-	void testTransactionalSelectAndUpdate() throws Exception {
+	void transactional_select_update() throws Exception {
 		Integer studentId = 2;
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
@@ -107,7 +107,7 @@ class DemoTransactionalTests {
 	 * 1: Like in default @Transactional but ignores update and insert. Will not throw exception if use save.
 	 * 
 	 */
-	void testTransactionalReadOnlySelectAndUpdate() throws Exception {
+	void transactional_ReadOnly_select_update() throws Exception {
 		Integer studentId = 3;
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
@@ -132,7 +132,7 @@ class DemoTransactionalTests {
 	 * 1. Row will be locked till end of transaction 
 	 * 2. Will not call select before update
 	 */
-	void testTransactionalLockSelectAndUpdate() throws Exception {
+	void transactional_lock_select_update() throws Exception {
 		Integer studentId = 4;
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
@@ -158,7 +158,7 @@ class DemoTransactionalTests {
 	 * 2. Will not call select before update
 	 * 3. Will close connection after 2 second and will throw exception for next 
 	 */
-	void testTransactionalLockTimeoutSelectAndUpdate() throws Exception {
+	void transactional_lock_timeout_select_update() throws Exception {
 		Integer studentId = 5;
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
@@ -178,7 +178,7 @@ class DemoTransactionalTests {
 	 * 
 	 * 1. Lock will not work without @Transactional
 	 */
-	void testNoTransactionalLockSelectAndUpdate() {
+	void test_NoTransactional_lock_select_update() {
 		Integer studentId = 1;
 		assertThrows(Exception.class, () -> studentService.getStudentNoTransactionalLocked(studentId));
 	}
