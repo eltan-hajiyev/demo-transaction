@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,13 @@ public class StudentService {
 	private AtomicInteger atomicInteger = new AtomicInteger(0);
 
 	public Student getStudentDefault(Integer id) {
+		Student student = studentRepository.findById(id).get();
+
+		return getStudent(student);
+	}
+
+	@Cacheable("redis-test-cache")
+	public Student getStudentCacheable(Integer id) {
 		Student student = studentRepository.findById(id).get();
 
 		return getStudent(student);
@@ -60,7 +68,7 @@ public class StudentService {
 			return student;
 		}
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(5000); //rest request
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

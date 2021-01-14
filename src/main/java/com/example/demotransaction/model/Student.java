@@ -1,5 +1,6 @@
 package com.example.demotransaction.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @DynamicUpdate
 @DynamicInsert
-public class Student {
+public class Student implements Serializable {
 	@Id
 	@GeneratedValue
 	private Integer id;

@@ -1,9 +1,10 @@
 package com.example.demotransaction.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class Book {
+public class Book implements Serializable {
 
 	private Integer id;
 

@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.example.demotransaction.model.Book;
 import com.example.demotransaction.model.Student;
-import com.example.demotransaction.repository.BookRepository;
 import com.example.demotransaction.repository.StudentRepository;
 import org.hibernate.LazyInitializationException;
 import org.junit.jupiter.api.Test;
@@ -14,11 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.demotransaction.model.SchoolFieldBase;
 import com.example.demotransaction.model.SchoolPropertyBase;
-import com.example.demotransaction.service.SchoolFieldBaseRepository;
-import com.example.demotransaction.service.SchoolPropertyBaseRepository;
+import com.example.demotransaction.repository.SchoolFieldBaseRepository;
+import com.example.demotransaction.repository.SchoolPropertyBaseRepository;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @SpringBootTest
 class DemoJpaAccessStrategyTests {

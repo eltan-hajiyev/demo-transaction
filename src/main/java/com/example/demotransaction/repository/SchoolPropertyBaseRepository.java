@@ -1,4 +1,4 @@
-package com.example.demotransaction.service;
+package com.example.demotransaction.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
