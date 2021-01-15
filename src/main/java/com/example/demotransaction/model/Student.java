@@ -1,13 +1,12 @@
 package com.example.demotransaction.model;
 
-import java.io.Serializable;
-import java.util.List;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
-
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @DynamicUpdate
