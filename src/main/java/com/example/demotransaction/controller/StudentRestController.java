@@ -7,25 +7,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
 
-@Controller
-@RequestMapping("/mvc")
-public class StudentMvcController {
+@RestController
+@RequestMapping("/rest")
+public class StudentRestController {
     @Autowired
     private StudentRepository studentRepository;
 
     @GetMapping("/students/{id}")
     @Transactional
-    public ModelAndView getStudents(@PathVariable Integer id, ModelAndView model) throws Exception {
+    public Student getStudents(@PathVariable Integer id, ModelAndView model) throws Exception {
         //Thread.sleep(20000);
         Student student = studentRepository.findById(id).get();
 
-        model.setViewName("students");
-        model.addObject("student", student);
-
-        return model;
+        return student;
     }
 }

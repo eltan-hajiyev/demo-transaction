@@ -103,8 +103,9 @@ class DemoTransactionalTests {
 	/*-
 	 * Using: @Transactional(readOnly = true)
 	 * 
-	 * 1: Like in default @Transactional but ignores update and insert. Will not throw exception if use save.
-	 * 
+	 * 1. Like in default @Transactional but ignores update and insert. Will not throw exception if use save.
+	 * 2. No dirty reads, no unrepeatable reads, doesn’t allow any updates, flush mode will be FlushMode.NEVER.
+	 * 3. You cannot call session.flsuh() even to flush session manually.
 	 */
 	void transactional_ReadOnly_select_update() throws Exception {
 		Integer studentId = 3;

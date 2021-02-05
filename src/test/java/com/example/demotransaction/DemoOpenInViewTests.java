@@ -20,13 +20,26 @@ public class DemoOpenInViewTests {
     MockMvc mockMvc;
 
     @Test
-    public void open_in_view() throws Exception {
-        System.err.println("MVC open-in-view works for for MVC view.");
+    public void mvc_open_in_view() throws Exception {
+        System.err.println("open-in-view works for MVC view.");
         try {
-            mockMvc.perform(get("/students/1"));
-            System.err.println("open-in-view enabled. spring.jpa.open-in-view=true");
+            mockMvc.perform(get("/mvc/students/1"));
+            System.err.println("open-in-view=true");
         } catch (Throwable t) {
-            System.err.println("open-in-view disabled. spring.jpa.open-in-view=false");
+            System.err.println("open-in-view=false");
+        }
+    }
+
+    @Test
+    public void rest_open_in_view() throws Exception {
+        System.err.println("open-in-view works for Rest service view.");
+        try {
+            mockMvc.perform(get("/rest/students/1")).andExpect((e) -> {
+                System.err.println("response:"+e.getResponse().getContentAsString());
+                System.err.println("open-in-view=false will return main object.");
+            });
+        } catch (Throwable t) {
+            System.err.println("open-in-view=true will try to create full object model.");
         }
     }
 }
