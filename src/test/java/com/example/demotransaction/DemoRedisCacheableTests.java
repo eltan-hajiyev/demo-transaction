@@ -1,7 +1,7 @@
 package com.example.demotransaction;
 
 import com.example.demotransaction.model.Student;
-import com.example.demotransaction.service.StudentService;
+import com.example.demotransaction.service.StudentQueryMixedWithProcessService;
 import com.example.demotransaction.tools.CPUTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +22,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 })
 public class DemoRedisCacheableTests {
     @Autowired
-    StudentService studentService;
+    StudentQueryMixedWithProcessService studentQueryMixedWithProcessService;
 
     @Test
     @Transactional
     public void redis_cacheable() {
         Long time1 = CPUTime.exec(()->{
-            Student student = studentService.getStudentCacheable(1);
+            Student student = studentQueryMixedWithProcessService.getStudentCacheable(1);
         });
         Long time2 = CPUTime.exec(() -> {
-            Student student = studentService.getStudentCacheable(1);
+            Student student = studentQueryMixedWithProcessService.getStudentCacheable(1);
         });
 
         System.err.println(time1 + "::" + time2);

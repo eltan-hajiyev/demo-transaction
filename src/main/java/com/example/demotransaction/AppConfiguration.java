@@ -12,7 +12,7 @@ public class AppConfiguration {
 	public Executor taskExecutor() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(10);
-		executor.setMaxPoolSize(20);
+		executor.setMaxPoolSize(2000);
 		executor.setQueueCapacity(0);
 		executor.setThreadNamePrefix("TextExecutor-");
 		executor.initialize();

@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class StudentService {
+public class StudentPureSelectQueryService {
 	@Autowired
 	StudentRepository studentRepository;
 	private AtomicInteger atomicInteger = new AtomicInteger(0);
@@ -61,20 +61,8 @@ public class StudentService {
 	}
 
 	public Student getStudent(Student student) {
+		Student student2 = studentRepository.findById(student.getId()).get();
 		System.err.println("1:::::::" + student);
-
-		if (student.getCount() > 0) {
-			return student;
-		}
-		try {
-			Thread.sleep(5000); //rest request
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		student.setCount(atomicInteger.incrementAndGet());
-		student.setStatus(true);
-
-		studentRepository.save(student);
 		System.err.println("2:::::::" + student);
 
 		return student;

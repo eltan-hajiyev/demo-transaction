@@ -2,7 +2,7 @@ package com.example.demotransaction;
 
 import com.example.demotransaction.model.Student;
 import com.example.demotransaction.repository.StudentRepository;
-import com.example.demotransaction.service.StudentService;
+import com.example.demotransaction.service.StudentQueryMixedWithProcessService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,18 +34,18 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 @SpringBootTest
 @TestPropertySource(properties = { "spring.jpa.properties.hibernate.enable_lazy_load_no_trans=true" })
-class DemoTransactionalTests {
+class DemoTransactionalForMixedProcessTests {
 	@Autowired
 	private StudentRepository studentRepository;
 
-	private StudentService studentService;
+	private StudentQueryMixedWithProcessService studentQueryMixedWithProcessService;
 
 	@Autowired
 	private ThreadPoolTaskExecutor taskExecutor;
 
 	@Autowired
-	public DemoTransactionalTests(StudentService studentService) {
-		this.studentService = studentService;
+	public DemoTransactionalForMixedProcessTests(StudentQueryMixedWithProcessService studentQueryMixedWithProcessService) {
+		this.studentQueryMixedWithProcessService = studentQueryMixedWithProcessService;
 	}
 
 	@Test
@@ -60,7 +60,7 @@ class DemoTransactionalTests {
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			CompletableFuture<Student> future = taskExecutor.submitListenable(() -> {
-				return studentService.getStudentDefault(studentId);
+				return studentQueryMixedWithProcessService.getStudentDefault(studentId);
 			}).completable();
 			Thread.sleep(200);
 			futureList.add(future);
@@ -86,7 +86,7 @@ class DemoTransactionalTests {
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			CompletableFuture<Student> future = taskExecutor.submitListenable(() -> {
-				return studentService.getStudentTransactional(studentId);
+				return studentQueryMixedWithProcessService.getStudentTransactional(studentId);
 			}).completable();
 			Thread.sleep(200);
 			futureList.add(future);
@@ -112,7 +112,7 @@ class DemoTransactionalTests {
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			CompletableFuture<Student> future = taskExecutor.submitListenable(() -> {
-				return studentService.getStudentTransactionalReadOnly(studentId);
+				return studentQueryMixedWithProcessService.getStudentTransactionalReadOnly(studentId);
 			}).completable();
 			Thread.sleep(200);
 			futureList.add(future);
@@ -137,7 +137,7 @@ class DemoTransactionalTests {
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			CompletableFuture<Student> future = taskExecutor.submitListenable(() -> {
-				return studentService.getStudentTransactionalLocked(studentId);
+				return studentQueryMixedWithProcessService.getStudentTransactionalLocked(studentId);
 			}).completable();
 			Thread.sleep(200);
 			futureList.add(future);
@@ -163,7 +163,7 @@ class DemoTransactionalTests {
 		List<CompletableFuture<Student>> futureList = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			CompletableFuture<Student> future = taskExecutor.submitListenable(() -> {
-				return studentService.getStudentTransactionalTimeoutLocked(studentId);
+				return studentQueryMixedWithProcessService.getStudentTransactionalTimeoutLocked(studentId);
 			}).completable();
 			Thread.sleep(200);
 			futureList.add(future);
@@ -180,7 +180,7 @@ class DemoTransactionalTests {
 	 */
 	void test_NoTransactional_lock_select_update() {
 		Integer studentId = 1;
-		assertThrows(Exception.class, () -> studentService.getStudentNoTransactionalLocked(studentId));
+		assertThrows(Exception.class, () -> studentQueryMixedWithProcessService.getStudentNoTransactionalLocked(studentId));
 	}
 
 }
