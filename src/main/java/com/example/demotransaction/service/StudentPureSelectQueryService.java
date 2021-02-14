@@ -24,39 +24,9 @@ public class StudentPureSelectQueryService {
 		return getStudent(student);
 	}
 
-	@Cacheable("redis-test-cache")
-	public Student getStudentCacheable(Integer id) {
-		Student student = studentRepository.findById(id).get();
-
-		return getStudent(student);
-	}
-
 	@Transactional
 	public Student getStudentTransactional(Integer id) {
 		Student student = studentRepository.findById(id).get();
-		return getStudent(student);
-	}
-
-	@Transactional(readOnly = true)
-	public Student getStudentTransactionalReadOnly(Integer id) {
-		Student student = studentRepository.findById(id).get();
-		return getStudent(student);
-	}
-
-	@Transactional
-	public Student getStudentTransactionalLocked(Integer id) {
-		Student student = studentRepository.findStudentForRead(id);
-		return getStudent(student);
-	}
-
-	@Transactional(timeout = 2)
-	public Student getStudentTransactionalTimeoutLocked(Integer id) {
-		Student student = studentRepository.findStudentForRead(id);
-		return getStudent(student);
-	}
-
-	public Student getStudentNoTransactionalLocked(Integer id) {
-		Student student = studentRepository.findStudentForRead(id);
 		return getStudent(student);
 	}
 

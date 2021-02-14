@@ -24,13 +24,6 @@ public class StudentQueryMixedWithProcessService {
 		return getStudent(student);
 	}
 
-	@Cacheable("redis-test-cache")
-	public Student getStudentCacheable(Integer id) {
-		Student student = studentRepository.findById(id).get();
-
-		return getStudent(student);
-	}
-
 	@Transactional
 	public Student getStudentTransactional(Integer id) {
 		Student student = studentRepository.findById(id).get();
