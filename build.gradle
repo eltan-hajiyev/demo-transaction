@@ -16,12 +16,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-
 	implementation 'org.springframework.boot:spring-boot-starter'
+
+	//http client APIs
+	implementation 'org.apache.httpcomponents:httpclient:4.5.3'
+//  implementation 'io.netty:netty-all:4.1.15.Final'
+	implementation 'com.squareup.okhttp:okhttp:2.7.5'
+	implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+
 	runtimeOnly 'com.h2database:h2'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	
+
 }
 
 subprojects {
