@@ -21,15 +21,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class DemoReadTimeoutTests {
 
-    private static Integer READ_TIMEOUT_LESS_THAN_OUT_INTERVAL = (int) Duration
-            .ofSeconds(ReadTimeoutController.DATA_OUT_INTERVAL_SEC)
-            .minusSeconds(1)
-            .toMillis();
+    private static Integer READ_TIMEOUT_LESS_THAN_OUT_INTERVAL_SEC =
+            ReadTimeoutController.DATA_OUT_INTERVAL_SEC - 1;
 
-    private static Integer READ_TIMEOUT_GRATE_THAN_OUT_INTERVAL = (int) Duration
-            .ofSeconds(ReadTimeoutController.DATA_OUT_INTERVAL_SEC)
-            .plusSeconds(1)
-            .toMillis();
+    private static Integer READ_TIMEOUT_GRATE_THAN_OUT_INTERVAL_SEC =
+            ReadTimeoutController.DATA_OUT_INTERVAL_SEC + 1;
+
+    private static Integer STANDARD_DEVIATION_MILLIE = 150;
 
     private URI uri;
 
@@ -49,7 +47,8 @@ class DemoReadTimeoutTests {
         factory.setBufferRequestBody(false);
         RestTemplate restTemplate = new RestTemplate(factory);
 
-        factory.setReadTimeout(READ_TIMEOUT_LESS_THAN_OUT_INTERVAL);
+        int readTimeout1 = (int)Duration.ofSeconds(READ_TIMEOUT_LESS_THAN_OUT_INTERVAL_SEC).toMillis();
+        factory.setReadTimeout(readTimeout1);
         long time1 = CPUTime.exec(() -> {
             Exception e = assertThrows(Exception.class, () -> {
                 restTemplate.getForEntity(uri, String.class);
@@ -57,15 +56,17 @@ class DemoReadTimeoutTests {
 
             Assertions.assertThat(e.getMessage()).contains("Read timed out");
         });
+        assertTrue(time1 < readTimeout1 + STANDARD_DEVIATION_MILLIE);
 
-        factory.setReadTimeout(READ_TIMEOUT_GRATE_THAN_OUT_INTERVAL);
+        int readTimeout2 = (int)Duration.ofSeconds(READ_TIMEOUT_GRATE_THAN_OUT_INTERVAL_SEC).toMillis();
+        factory.setReadTimeout(readTimeout2);
         long time2 = CPUTime.exec(() -> {
             assertDoesNotThrow(() -> {
                 restTemplate.getForEntity(uri, String.class);
             });
         });
 
-        assertTrue(time1 < time2);
+        assertFalse(time2 < 3 * readTimeout2);
     }
 
     @Test
@@ -77,21 +78,22 @@ class DemoReadTimeoutTests {
                 .url(uri.toURL())
                 .build();
 
-        client.setReadTimeout(READ_TIMEOUT_LESS_THAN_OUT_INTERVAL, TimeUnit.MILLISECONDS);
+        client.setReadTimeout(READ_TIMEOUT_LESS_THAN_OUT_INTERVAL_SEC, TimeUnit.SECONDS);
         long time1 = CPUTime.exec(() -> {
             assertThrows(SocketTimeoutException.class, () -> {
-                client.newCall(request).execute();
+                String res = client.newCall(request).execute().body().string();
             });
         });
+        assertTrue(time1 < client.getReadTimeout() + STANDARD_DEVIATION_MILLIE);
 
-        client.setReadTimeout(READ_TIMEOUT_GRATE_THAN_OUT_INTERVAL, TimeUnit.MILLISECONDS);
+        client.setReadTimeout(READ_TIMEOUT_GRATE_THAN_OUT_INTERVAL_SEC, TimeUnit.SECONDS);
         long time2 = CPUTime.exec(() -> {
             assertDoesNotThrow(() -> {
-                client.newCall(request).execute();
+                String res = client.newCall(request).execute().body().string();
             });
         });
 
-        assertTrue(time1 < time2);
+        assertFalse(time2 < 3 * client.getReadTimeout());
     }
 
 }
