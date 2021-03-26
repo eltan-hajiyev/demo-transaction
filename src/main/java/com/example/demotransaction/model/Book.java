@@ -1,7 +1,7 @@
 package com.example.demotransaction.model;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import javax.persistence.*;
 
 @Entity
 public class Book implements Serializable {

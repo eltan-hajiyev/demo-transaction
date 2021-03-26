@@ -2,14 +2,13 @@ package com.example.demotransaction.controller;
 
 import com.example.demotransaction.model.Student;
 import com.example.demotransaction.repository.StudentRepository;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.transaction.Transactional;
 
 @Controller
 @RequestMapping("/mvc")

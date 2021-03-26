@@ -2,17 +2,13 @@ package com.example.demotransaction;
 
 import com.example.demotransaction.model.Student;
 import com.example.demotransaction.service.StudentCacheService;
-import com.example.demotransaction.service.StudentQueryMixedWithProcessService;
 import com.example.demotransaction.tools.CPUTime;
 import com.example.demotransaction.tools.ThreadPoolExecutorForInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.TestPropertySource;
-
-import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

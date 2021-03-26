@@ -1,12 +1,11 @@
 package com.example.demotransaction.repository;
 
 import com.example.demotransaction.model.Student;
+import javax.persistence.LockModeType;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-
-import javax.persistence.LockModeType;
 
 /*-
  * PESSIMISTIC_READ acquires a shared (read) lock on the associated table row record

@@ -1,9 +1,8 @@
 package com.example.demotransaction.model;
 
+import javax.persistence.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-
-import javax.persistence.*;
 
 @Entity
 @DynamicUpdate

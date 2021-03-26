@@ -2,12 +2,11 @@ package com.example.demotransaction.service;
 
 import com.example.demotransaction.model.Student;
 import com.example.demotransaction.repository.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class StudentFilterService {

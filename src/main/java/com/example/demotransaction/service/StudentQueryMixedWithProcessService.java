@@ -2,14 +2,12 @@ package com.example.demotransaction.service;
 
 import com.example.demotransaction.model.Student;
 import com.example.demotransaction.repository.StudentRepository;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
