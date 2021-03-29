@@ -50,10 +50,10 @@ public class DemoAopBehaviourWithTransactionalTests {
     }
 
     /**
-     * AOP will slow down your @Transactional methods
+     * AOP procedures will slow down your @Transactional methods
      */
     @Test
-    void aop_blocks_transactional_session() {
+    void aop_procedure_keeps_open_transactional_session() {
         threadPoolExecutorForInfo.execute(THREAD_COUNT, () -> {
             return studentPureSelectQueryService.getStudentTransactional(1);
         });
@@ -67,7 +67,7 @@ public class DemoAopBehaviourWithTransactionalTests {
      * AOP will not react to your none @Transactional methods
      */
     @Test
-    void aop_not_blocks_none_transactional_session() {
+    void aop_procedure_not_keeps_none_transactional_session() {
         threadPoolExecutorForInfo.execute(THREAD_COUNT, () -> {
             return studentPureSelectQueryService.getStudentDefault(1);
         });
